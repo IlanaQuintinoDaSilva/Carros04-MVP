@@ -87,5 +87,6 @@ Versao %s<br><br>
     <string name="tipo">Tipo</string>
     <string name="error">Erro</string>
     <string name="logout">Logout</string>
+    <string name="add_carros">Add Carros</string>
 
 </resources>

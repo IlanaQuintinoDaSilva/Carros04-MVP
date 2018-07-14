@@ -10,7 +10,7 @@ import br.com.livroandroid.carros.extensions.loadUrl
 import kotlinx.android.synthetic.main.adapter_carro.view.*
 
 class CarroAdapter(
-        val carros: List<Carro>,
+        val carros: HashMap<String, Carro>,
         val onClick: (Carro) -> Unit) :
         RecyclerView.Adapter<CarroAdapter.CarrosViewHolder>() {
 
@@ -25,7 +25,8 @@ class CarroAdapter(
     }
 
     override fun onBindViewHolder(holder: CarrosViewHolder, position: Int) {
-        val carro = carros[position]
+        val list = carros.values.toList()
+        val carro = list[position]
         val view = holder.itemView
         with(view) {
             tNome.text = carro.nome

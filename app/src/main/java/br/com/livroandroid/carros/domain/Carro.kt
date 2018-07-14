@@ -7,7 +7,7 @@ import android.os.Parcelable
 
 @Entity(tableName = "carro")
 
-class Carro : Parcelable {
+class Carro() : Parcelable {
     @PrimaryKey
     var id: Long = 0
     var tipo = ""
@@ -20,6 +20,12 @@ class Carro : Parcelable {
         get() = if (field.trim().isEmpty()) "0.0" else field
     var longitude = ""
         get() = if (field.trim().isEmpty()) "0.0" else field
+
+    constructor(id:Long, nome:String, urlFoto:String) : this() {
+        this.id = id
+        this.nome = nome
+        this.urlFoto = urlFoto
+    }
 
     override fun toString(): String {
         return "Carro{nome='$nome'}"
