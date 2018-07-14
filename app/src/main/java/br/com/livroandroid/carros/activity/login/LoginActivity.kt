@@ -3,7 +3,9 @@ package br.com.livroandroid.carros.activity.login
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import br.com.livroandroid.carros.BuildConfig
@@ -16,6 +18,7 @@ import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import kotlinx.android.synthetic.main.activity_login.*
@@ -186,6 +189,39 @@ class LoginActivity : BaseActivity() {
                         .setAvailableProviders(providers)
                         .build(),
                 GOOGLE_SIGN_IN)
+    }
+
+    private fun initDynamicLink(intent: Intent) {
+        FirebaseDynamicLinks.getInstance()
+                .getDynamicLink(intent)
+                .addOnSuccessListener(this) {
+                    var deepLink: Uri? = null
+                    if (it != null) {
+                        deepLink = it.link
+
+
+                        val protocol = deepLink.scheme
+                        val server = deepLink.authority
+                        val path = deepLink.path
+                        val args = deepLink.queryParameterNames
+                        val p = deepLink.getQueryParameter("p")
+                        val nome = deepLink.getQueryParameter("nome")
+
+                        Log.d(Companion.TAG, "-------------------")
+                        Log.d(Companion.TAG, "deepLink $deepLink")
+                        Log.d(Companion.TAG, "protocol $protocol")
+                        Log.d(Companion.TAG, "server $server")
+                        Log.d(Companion.TAG, "path $path")
+                        Log.d(Companion.TAG, "args $args")
+                        Log.d(Companion.TAG, "p $p")
+                        Log.d(Companion.TAG, "nome $nome")
+                        Log.d(Companion.TAG, "-------------------")
+                    }
+                }
+                .addOnFailureListener(this) {
+                    e ->
+                    Log.w(TAG, "getDynamicLink:onFailure", e)
+                }
     }
 
 }

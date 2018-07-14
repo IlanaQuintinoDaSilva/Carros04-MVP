@@ -35,6 +35,9 @@ dependencies {
     //Crashlytics
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.3'
 
+    //Dynamic Links
+    implementation 'com.google.firebase:firebase-dynamic-links:16.0.1'
+
     //Firebase
     implementation 'com.google.firebase:firebase-core:16.0.1'
     implementation 'com.google.firebase:firebase-config:16.0.0'
