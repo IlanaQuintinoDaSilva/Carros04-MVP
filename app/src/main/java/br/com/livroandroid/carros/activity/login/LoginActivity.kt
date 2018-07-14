@@ -1,6 +1,8 @@
 package br.com.livroandroid.carros.activity.login
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -9,13 +11,18 @@ import br.com.livroandroid.carros.R
 import br.com.livroandroid.carros.activity.BaseActivity
 import br.com.livroandroid.carros.activity.carros.CarrosActivity
 import br.com.livroandroid.carros.extensions.setupToolbar
+import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import kotlinx.android.synthetic.main.activity_login.*
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
+import java.util.*
 
 class LoginActivity : BaseActivity() {
 
@@ -24,7 +31,19 @@ class LoginActivity : BaseActivity() {
     }
 
 
+    companion object {
+        private const val TAG = "livroandroid"
+        private const val GOOGLE_SIGN_IN = 123
+    }
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        val user = FirebaseAuth.getInstance().currentUser
+        if(user != null) {
+            go(user)
+        }
 
         initFirebaseConfig()
 
@@ -39,7 +58,38 @@ class LoginActivity : BaseActivity() {
 
         btLogin.setOnClickListener { onClickLogin() }
 
+        btGoogle.setOnClickListener { onClickGoogle() }
+
         presenter.onCreate()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == GOOGLE_SIGN_IN) {
+            val response = IdpResponse.fromResultIntent(data)
+
+            if (resultCode == Activity.RESULT_OK) {
+                // Successfully signed in
+                val user = FirebaseAuth.getInstance().currentUser
+                if(user != null) {
+                    go(user)
+                }
+                // ...
+            } else {
+                // Sign in failed. If response is null the user canceled the
+                // sign-in flow using the back button. Otherwise check
+                // response.getError().getErrorCode() and handle the error.
+                // ...
+                toast(response?.error?.message!!)
+            }
+        }
+    }
+
+    private fun go(user: FirebaseUser) {
+        toast("User logado ${user.email}")
+        startActivity<CarrosActivity>()
+        finish()
     }
 
     @SuppressLint("CheckResult")
@@ -125,6 +175,17 @@ class LoginActivity : BaseActivity() {
                 }
     }
 
+    private fun onClickGoogle() {
+        val providers = Arrays.asList(
+                AuthUI.IdpConfig.GoogleBuilder().build())
 
+        // Create and launch sign-in intent
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(providers)
+                        .build(),
+                GOOGLE_SIGN_IN)
+    }
 
 }
