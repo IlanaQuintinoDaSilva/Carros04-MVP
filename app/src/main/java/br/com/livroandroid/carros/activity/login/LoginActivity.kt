@@ -49,6 +49,7 @@ class LoginActivity : BaseActivity() {
         val senha = tSenha.text.toString()
 
         //Crashlytics.getInstance().crash()
+        //test
 
         presenter.onClickLogin(login, senha)
     }
