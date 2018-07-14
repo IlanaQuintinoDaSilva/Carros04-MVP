@@ -3,12 +3,15 @@ package br.com.livroandroid.carros.activity.carros
 import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import br.com.livroandroid.carros.R
 import br.com.livroandroid.carros.activity.BaseActivity
 import br.com.livroandroid.carros.adapter.CarroAdapter
 import br.com.livroandroid.carros.domain.Carro
 import br.com.livroandroid.carros.extensions.setupToolbar
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_carros.*
 import kotlinx.android.synthetic.main.include_progress.*
 import org.jetbrains.anko.toast
@@ -31,6 +34,25 @@ class CarrosActivity : BaseActivity() {
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.itemAnimator = DefaultItemAnimator()
         recyclerView.setHasFixedSize(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_carros, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.action_logout -> {
+                val user = FirebaseAuth.getInstance().currentUser
+                if(user != null) {
+                    FirebaseAuth.getInstance().signOut()
+                    finish()
+                }
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onResume() {

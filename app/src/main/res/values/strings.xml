@@ -86,5 +86,6 @@ Versao %s<br><br>
     <!-- T -->
     <string name="tipo">Tipo</string>
     <string name="error">Erro</string>
+    <string name="logout">Logout</string>
 
 </resources>
