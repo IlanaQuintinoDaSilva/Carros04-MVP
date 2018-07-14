@@ -42,6 +42,9 @@ dependencies {
     // Multidex
     implementation 'com.android.support:multidex:1.0.3'
 
+
+    implementation 'com.firebaseui:firebase-ui-auth:3.3.1'
+
     // Libs Support
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:design:27.1.1'
