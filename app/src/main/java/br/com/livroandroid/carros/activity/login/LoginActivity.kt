@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.Toast
 import br.com.livroandroid.carros.BuildConfig
 import br.com.livroandroid.carros.R
+import br.com.livroandroid.carros.R.id.btLogin
 import br.com.livroandroid.carros.activity.BaseActivity
 import br.com.livroandroid.carros.activity.carros.CarrosActivity
 import br.com.livroandroid.carros.extensions.setupToolbar
@@ -43,10 +44,10 @@ class LoginActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        val user = FirebaseAuth.getInstance().currentUser
+        /*val user = FirebaseAuth.getInstance().currentUser
         if(user != null) {
             go(user)
-        }
+        }*/
 
         initFirebaseConfig()
 
